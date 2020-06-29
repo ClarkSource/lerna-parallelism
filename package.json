@@ -1,0 +1,31 @@
+{
+  "name": "@clark-ci/lerna-parallelism",
+  "version": "0.0.0",
+  "description": "`lerna run` with CircleCI parallelism splitting support",
+  "main": "index.js",
+  "author": "Jan Buschtöns <jan.buschtoens@clark.de>",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "lint:js": "eslint .",
+    "test": "jest"
+  },
+  "bin": "./bin.js",
+  "devDependencies": {
+    "@clark/eslint-config-node": "^1.24.1",
+    "@types/node": "~14.0.14",
+    "@types/yargs": "^15.0.5",
+    "eslint": "^7.3.1",
+    "jest": "^26.1.0"
+  },
+  "dependencies": {
+    "@lerna/cli": "^3.18.5",
+    "@lerna/list": "^3.21.0",
+    "@lerna/run": "^3.21.0",
+    "lerna": "^3.22.1",
+    "yargs": "^15.3.1"
+  },
+  "engines": {
+    "node": ">= 12.*"
+  }
+}
