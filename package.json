@@ -1,22 +1,19 @@
 {
   "name": "@clark-ci/lerna-parallelism",
   "version": "0.0.0",
-  "description": "`lerna run` with CircleCI parallelism splitting support",
-  "main": "index.js",
-  "author": "Jan Buschtöns <jan.buschtoens@clark.de>",
-  "license": "UNLICENSED",
   "private": true,
+  "description": "`lerna run` with CircleCI parallelism splitting support",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ClarkSource/lerna-parallelism.git"
+  },
+  "license": "UNLICENSED",
+  "author": "Jan Buschtöns <jan.buschtoens@clark.de>",
+  "main": "index.js",
+  "bin": "./bin.js",
   "scripts": {
     "lint:js": "eslint .",
     "test": "jest"
-  },
-  "bin": "./bin.js",
-  "devDependencies": {
-    "@clark/eslint-config-node": "^1.24.1",
-    "@types/node": "~14.0.14",
-    "@types/yargs": "^15.0.5",
-    "eslint": "^7.3.1",
-    "jest": "^26.1.0"
   },
   "dependencies": {
     "@lerna/cli": "^3.18.5",
@@ -25,7 +22,35 @@
     "lerna": "^3.22.1",
     "yargs": "^15.3.1"
   },
+  "devDependencies": {
+    "@clark/eslint-config-node": "^1.24.1",
+    "@types/node": "~14.0.14",
+    "@types/yargs": "^15.0.5",
+    "eslint": "^7.3.1",
+    "jest": "^26.1.0",
+    "release-it": "^13.6.0",
+    "release-it-lerna-changelog": "^2.3.0"
+  },
   "engines": {
     "node": ">= 12.*"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "release-it": {
+    "plugins": {
+      "release-it-lerna-changelog": {
+        "infile": "CHANGELOG.md",
+        "launchEditor": false
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true,
+      "tokenRef": "GITHUB_AUTH"
+    },
+    "npm": false
   }
 }
