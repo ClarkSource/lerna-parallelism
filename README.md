@@ -54,7 +54,7 @@ respective command.
 
 The following commands from `lerna` are supported:
 
-### `lena-parallelism run`
+### `lerna-parallelism run`
 
 [`lerna run`][lerna-run]
 
