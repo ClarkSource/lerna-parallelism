@@ -1,3 +1,11 @@
+<p align="center">
+  <a href="https://www.clark.de/de/jobs">
+    <br><br><br><br><br>
+    <img alt="CLARK" src="./docs/assets/clark.svg" height="40">
+    <br><br><br><br><br>
+  </a>
+</p>
+
 # lerna-parallelism
 
 [![CI](https://github.com/ClarkSource/lerna-parallelism/workflows/CI/badge.svg)](https://github.com/ClarkSource/lerna-parallelism/actions)
