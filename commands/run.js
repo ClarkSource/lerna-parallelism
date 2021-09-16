@@ -1,19 +1,32 @@
 const { RunCommand: LernaRunCommand } = require('@lerna/run');
 
-const { splittable, getSplitPackages } = require('../options/split');
+const {
+  splittable,
+  getSplitPackages,
+  getLoadBalancedPackages
+} = require('../options/split');
 
 module.exports = { ...require('@lerna/run/command') };
 
 class RunCommand extends LernaRunCommand {
   execute() {
     if (this.options.split > 1) {
-      const { split, partition } = this.options;
-
-      const { packages, logMessage } = getSplitPackages(
-        this.packagesWithScript,
+      const {
         split,
-        partition
-      );
+        partition,
+        loadBalance,
+        packageTestWeightKey
+      } = this.options;
+
+      const { packages, logMessage } = loadBalance
+        ? getLoadBalancedPackages(
+            this.packagesWithScript,
+            split,
+            partition,
+            packageTestWeightKey,
+            this.logger
+          )
+        : getSplitPackages(this.packagesWithScript, split, partition);
 
       this.packagesWithScript = packages;
       this.count = packages.length;
