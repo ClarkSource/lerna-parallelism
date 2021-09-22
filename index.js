@@ -1,7 +1,9 @@
-const lernaCLI = require('@lerna/cli');
 const lernaPkg = require('lerna/package.json');
 
 const runCmd = require('./commands/run');
+const { requireFromLerna } = require('./utils/require-from');
+
+const lernaCLI = requireFromLerna('@lerna/cli');
 
 module.exports.main = function main(argv) {
   const context = {

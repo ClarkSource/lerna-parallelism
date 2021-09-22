@@ -15,11 +15,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@lerna/cli": "^3.18.5",
-    "@lerna/list": "^3.21.0",
-    "@lerna/run": "^3.21.0",
-    "lerna": "^3.22.1",
-    "yargs": "^15.3.1"
+    "lerna": "^3.22.1"
   },
   "devDependencies": {
     "@clark/eslint-config-node": "^2.2.0",
