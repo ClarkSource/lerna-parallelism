@@ -1,8 +1,9 @@
-const { RunCommand: LernaRunCommand } = require('@lerna/run');
-
 const { splittable, getSplitPackages } = require('../options/split');
+const { requireFromLerna } = require('../utils/require-from');
 
-module.exports = { ...require('@lerna/run/command') };
+const { RunCommand: LernaRunCommand } = requireFromLerna('@lerna/run');
+
+module.exports = { ...requireFromLerna('@lerna/run/command') };
 
 class RunCommand extends LernaRunCommand {
   execute() {

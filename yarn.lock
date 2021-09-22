@@ -735,7 +735,7 @@
     p-map-series "^1.0.0"
     p-waterfall "^1.0.0"
 
-"@lerna/cli@3.18.5", "@lerna/cli@^3.18.5":
+"@lerna/cli@3.18.5":
   version "3.18.5"
   resolved "https://registry.yarnpkg.com/@lerna/cli/-/cli-3.18.5.tgz#c90c461542fcd35b6d5b015a290fb0dbfb41d242"
   integrity sha512-erkbxkj9jfc89vVs/jBLY/fM0I80oLmJkFUV3Q3wk9J3miYhP14zgVEBsPZY68IZlEjT6T3Xlq2xO1AVaatHsA==
@@ -977,7 +977,7 @@
     p-map "^2.1.0"
     slash "^2.0.0"
 
-"@lerna/list@3.21.0", "@lerna/list@^3.21.0":
+"@lerna/list@3.21.0":
   version "3.21.0"
   resolved "https://registry.yarnpkg.com/@lerna/list/-/list-3.21.0.tgz#42f76fafa56dea13b691ec8cab13832691d61da2"
   integrity sha512-KehRjE83B1VaAbRRkRy6jLX1Cin8ltsrQ7FHf2bhwhRHK0S54YuA6LOoBnY/NtA8bHDX/Z+G5sMY78X30NS9tg==
@@ -1243,7 +1243,7 @@
     figgy-pudding "^3.5.1"
     p-queue "^4.0.0"
 
-"@lerna/run@3.21.0", "@lerna/run@^3.21.0":
+"@lerna/run@3.21.0":
   version "3.21.0"
   resolved "https://registry.yarnpkg.com/@lerna/run/-/run-3.21.0.tgz#2a35ec84979e4d6e42474fe148d32e5de1cac891"
   integrity sha512-fJF68rT3veh+hkToFsBmUJ9MHc9yGXA7LSDvhziAojzOb0AI/jBDp6cEcDQyJ7dbnplba2Lj02IH61QUf9oW0Q==
@@ -9144,7 +9144,7 @@ yargs@^14.2.2:
     y18n "^4.0.0"
     yargs-parser "^15.0.1"
 
-yargs@^15.0.0, yargs@^15.3.1:
+yargs@^15.0.0:
   version "15.3.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.3.1.tgz#9505b472763963e54afe60148ad27a330818e98b"
   integrity sha512-92O1HWEjw27sBfgmXiixJWT5hRBp2eobqXicLtPBIDBhYB+1HpwZlXmbW2luivBJHBzki+7VyCLRtAkScbTBQA==
