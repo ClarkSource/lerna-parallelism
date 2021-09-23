@@ -36,9 +36,10 @@ class RunCommand extends LernaRunCommand {
 
 module.exports.RunCommand = this.RunCommand;
 
-module.exports.handler = function handler(argv) {
-  return new RunCommand(argv);
-};
+/** @param {import('@types/yargs').Argv} argv */
+module.exports.handler = argv => new RunCommand(argv);
 
 const { builder } = module.exports;
+
+/** @param {import('@types/yargs').Argv} yargs */
 module.exports.builder = yargs => splittable(builder(yargs));
