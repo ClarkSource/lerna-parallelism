@@ -55,7 +55,7 @@ module.exports.splittable = yargs =>
     .option('packageWeightKey', {
       group: 'Distribution Strategy',
       description:
-        "The lookup key to use for reading the package's weight from its `package.json`",
+        "The lookup key to use for reading the package's weight from its `package.json`. Supports `nested.properties`.",
       type: 'string',
       default: 'lernaPackageWeight'
     })
@@ -199,7 +199,6 @@ module.exports.getLoadBalancedPackages = function (
   logger.debug(partitionWeights);
 
   const chunk = partitions[partition];
-
   const partitionSize = chunk.length;
 
   return {

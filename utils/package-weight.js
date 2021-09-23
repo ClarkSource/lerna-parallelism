@@ -1,5 +1,7 @@
 const assert = require('assert');
 
+const dotProp = require('dot-prop');
+
 /**
  * Returns `defaultValue`, if and only if `value` is `undefined`. Otherwise
  * returns `value`.
@@ -30,6 +32,17 @@ const assertInRange = (value, min, max) => {
 };
 
 /**
+ * Builds a lense for reading the value at `path` from `pkg`.
+ *
+ * @param {string} keyPath
+ * @returns {(pkg: Package) => unknown}
+ */
+module.exports.readKeyPathFromPackage = keyPath =>
+  keyPath.includes('.')
+    ? pkg => dotProp.get(pkg.toJSON(), keyPath)
+    : pkg => pkg.get(keyPath);
+
+/**
  * Builds a lense for reading the package weight at `path` from `pkg`.
  *
  * If the property is not defined, defaults to `defaultValue`. Asserts that the
@@ -45,7 +58,7 @@ module.exports.getWeightFromPackage = (
   keyPath,
   { min = 0, max = Number.POSITIVE_INFINITY, defaultValue = 1 } = {}
 ) => {
-  const readWeight = pkg => pkg.get(keyPath);
+  const readWeight = module.exports.readKeyPathFromPackage(keyPath);
 
   return pkg =>
     assertInRange(withDefault(readWeight(pkg), defaultValue), min, max);

@@ -15,6 +15,13 @@ describe('getWeightFromPackage(path, opts?)(pkg)', () => {
       expect(getWeightFromPackage('foo')(pkg)).toBe(420);
       expect(getWeightFromPackage('bar')(pkg)).toBe(69);
     });
+
+    test('supports `nested.properties` in `keyPath`', () => {
+      const pkg = mockPackage({ 'foo.dot': 420, nested: { bar: 69 } });
+
+      expect(getWeightFromPackage('foo\\.dot')(pkg)).toBe(420);
+      expect(getWeightFromPackage('nested.bar')(pkg)).toBe(69);
+    });
   });
 
   describe('`defaultValue`', () => {
