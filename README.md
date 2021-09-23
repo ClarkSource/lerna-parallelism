@@ -18,11 +18,62 @@
 [![devDependencies Status](https://david-dm.org/ClarkSource/lerna-parallelism/dev-status.svg)](https://david-dm.org/ClarkSource/lerna-parallelism?type=dev)
 
 **lerna-parallelism** is an extension of [**lerna**][lerna] that adds support
-for parallel execution / splitting, for e.g.
-[CircleCI's `parallelism` feature.][circleci-parallelism]
+for deterministically partitioning packages to allow parallel execution across
+multiple workers, like [CircleCI's `parallelism` feature][circleci-parallelism].
 
 [lerna]: https://github.com/lerna/lerna
 [circleci-parallelism]: https://circleci.com/docs/2.0/parallelism-faster-jobs/
+
+## Introduction
+
+### Use Case
+
+> Speeding up monorepo CI pipelines via multi-worker parallelization.
+
+You maintain a large [`lerna`][lerna] monorepo with lots of individual packages.
+In CI you run a script / command for many or all of the packages.
+
+```sh
+# Execute the `test` script for all packages.
+lerna run \
+  # Prefix each log line with the package name.
+  # https://github.com/lerna/lerna/tree/main/commands/run#--stream
+  --stream \
+  # Run packages sequentially to avoid interleaved log output and resource contention.
+  # https://github.com/lerna/lerna/blob/main/core/global-options/README.md#--concurrency
+  --concurrency 1 \
+  test
+```
+
+Your CI workflow is taking far too long, because you process all packages
+sequentially on a single CI worker instance / node / VM.
+
+Your CI service supports spinning up multiple worker instances, but you don't
+know how tell `lerna` to distribute the workload across these instances. You
+could use [`--scope`][lerna-scope] and hard-code all package names, but this is
+difficult to maintain, as packages are added, renamed or removed.
+
+[lerna-scope]: https://github.com/lerna/lerna/tree/main/core/filter-options#--scope-glob
+
+### Quick Example
+
+**lerna-parallelism** makes it easy to split the workload — the packages to be
+processed — dynamically and deterministically across separate worker instances.
+
+```sh
+lerna-parallelism run \
+  # Keep your `lerna` options just like before.
+  --stream \
+  --concurrency 1 \
+  # Divide the list of packages to process into 4 equal-sized chunks.
+  # This should be equal to the total number of worker instances.
+  --split 4 \
+  # Take only the first chunk (zero-based).
+  # This should be the index of the individual worker instance you're running on.
+  --partition 0 \
+  # Run the `test` script for all packages in that chunk only.
+  test
+```
 
 ## Installation
 
