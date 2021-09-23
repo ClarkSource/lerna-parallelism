@@ -2,7 +2,6 @@
 
 - fix(utils): cover `requireFromLerna`
 
-
 ## v0.2.0 (2021-09-23)
 
 - feat: weighted load-balancing via `package.json` config
@@ -14,6 +13,11 @@
   partitions.
 - docs: improve `README.md`
 - docs: add DocBlock code comments
+
+## v0.1.5 (2021-09-23)
+
+- fix(utils): cover `requireFromLerna`<br>
+  Backported from `v0.2.1`.
 
 ## v0.1.4 (2021-09-23)
 
