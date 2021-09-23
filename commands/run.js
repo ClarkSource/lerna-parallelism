@@ -12,17 +12,23 @@ module.exports = { ...requireFromLerna('@lerna/run/command') };
 class RunCommand extends LernaRunCommand {
   execute() {
     if (this.options.split > 1) {
-      const { split, partition, loadBalance, packageWeightKey } = this.options;
+      const { split, partition, distributeBy, packageWeightKey } = this.options;
 
-      const { packages, logMessage } = loadBalance
-        ? getLoadBalancedPackages(
-            this.packagesWithScript,
-            split,
-            partition,
-            packageWeightKey,
-            this.logger
-          )
-        : getSplitPackages(this.packagesWithScript, split, partition);
+      const { packages, logMessage } = (() => {
+        switch (distributeBy) {
+          case 'weight':
+            return getLoadBalancedPackages(
+              this.packagesWithScript,
+              split,
+              partition,
+              packageWeightKey,
+              this.logger
+            );
+          default:
+          case 'count':
+            return getSplitPackages(this.packagesWithScript, split, partition);
+        }
+      })();
 
       this.packagesWithScript = packages;
       this.count = packages.length;
