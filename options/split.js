@@ -29,27 +29,33 @@ function validate(split, partition) {
 module.exports.splittable = yargs =>
   yargs
     .option('split', {
+      group: 'Partition Count',
       type: 'number',
       default: CIRCLE_NODE_TOTAL ? Number.parseInt(CIRCLE_NODE_TOTAL, 10) : 1,
       defaultDescription: 'The number of partitions.  $CIRCLE_NODE_TOTAL ?? 1'
     })
     .option('partition', {
+      group: 'Partition Count',
       type: 'number',
       default: CIRCLE_NODE_INDEX ? Number.parseInt(CIRCLE_NODE_INDEX, 10) : 0,
       defaultDescription:
         'The partition ID for this instance to execute.  $CIRCLE_NODE_INDEX ?? 0'
     })
-    .option('loadBalance', {
-      type: 'boolean',
-      default: false,
-      defaultDescription:
-        'Use a greedy round-robin load balancing algo instead of default split'
+    .option('distributeBy', {
+      group: 'Distribution Strategy',
+      description:
+        'Algorithm to use for deciding which package goes into which partition.',
+      type: 'string',
+      choices: ['count', 'weight'],
+      default: 'count',
+      defaultDescription: 'Split into even-sized partitions.'
     })
     .option('packageWeightKey', {
+      group: 'Distribution Strategy',
+      description:
+        "The lookup key to use for reading the package's weight from its `package.json`",
       type: 'string',
-      default: 'lernaPackageWeight',
-      defaultDescription:
-        "The lookup key to use for reading the project's weight from its package.json"
+      default: 'lernaPackageWeight'
     })
     .check(({ split, partition }) => {
       validate(split, partition);
