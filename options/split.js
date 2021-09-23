@@ -108,16 +108,12 @@ module.exports.getLoadBalancedPackages = function (
   }
 
   // Init partition weight totals
-  const partitionWeights = {};
-  partitions.forEach((_, index) => {
-    partitionWeights[index] = 0;
-  });
+  const partitionWeights = Array.from({ length: partitions.length }).fill(0);
 
   // Sort packages by weight in descending order.
   // We will put the largest remaining weighted package in the partition with the least total weight.
   const packagesSortedByWeightDesc = [...packages].sort(
-    (a, b) =>
-      (b.get(packageWeightKey) || 1) - (a.get(packageWeightKey) || 1)
+    (a, b) => (b.get(packageWeightKey) || 1) - (a.get(packageWeightKey) || 1)
   );
 
   const getLightestPartition = () => {
@@ -133,7 +129,7 @@ module.exports.getLoadBalancedPackages = function (
     return minId;
   };
 
-  packagesSortedByWeightDesc.forEach(project => {
+  for (const project of packagesSortedByWeightDesc) {
     const lightestPartition = getLightestPartition();
     logger.debug(
       `Adding package ${project.name} (weight: ${project.get(
@@ -141,9 +137,8 @@ module.exports.getLoadBalancedPackages = function (
       )}) to partition ${lightestPartition}`
     );
     partitions[lightestPartition].push(project);
-    partitionWeights[lightestPartition] +=
-      project.get(packageWeightKey) || 1;
-  });
+    partitionWeights[lightestPartition] += project.get(packageWeightKey) || 1;
+  }
 
   logger.debug(
     partitions.map(part =>
