@@ -95,31 +95,31 @@ pull request!
 
 ## Load Balancing (advanced)
 
-By default, `lerna-parallelism` gives each partition an approximately equal number
-of packages by chunking an alphabetized array. Depending on the number of tests 
-each of your packages has, you may find this results in imbalanced runtimes between 
-partitions.
+By default, `lerna-parallelism` gives each partition an approximately equal
+number of packages by chunking an alphabetized array. Depending on the number of
+tests each of your packages has, you may find this results in imbalanced
+runtimes between partitions.
 
 To address this, `lerna-parallelism` offers a load balancing mode which uses a
-weighted round-robin algorithm, informed by a weight "hint" specified in each 
+weighted round-robin algorithm, informed by a weight "hint" specified in each
 package's `package.json`.
 
 This adds two additional CLI options in addition to those above:
 
-- `--loadBalance`: Toggles load-balancing mode. Defaults to
-  `false`.
-- `--packageWeightKey myProjectWeight`: The lookup key used to read the project's
-  weight from its `package.json`. Defaults to `lernaPackageWeight`.
+- `--loadBalance`: Toggles load-balancing mode. Defaults to `false`.
+- `--packageWeightKey myProjectWeight`: The lookup key used to read the
+  project's weight from its `package.json`. Defaults to `lernaPackageWeight`.
 
 ### Usage
 
 `lerna-parallelism --loadBalance run test`
 
-And add a `lernaPackageTestWeight` property (numeric) to your package.json for each package.
-If it is missing, `1` is the default weight assigned.
+And add a `lernaPackageWeight` property (numeric) to your package.json for each
+package. If it is missing, `1` is the default weight assigned.
 
 If you have a need to partition differently for multiple CI tasks, you can use
-`--packageWeightKey` to specify which weight property should be read from `package.json`.
+`--packageWeightKey` to specify which weight property should be read from
+`package.json`.
 
 ## License
 
