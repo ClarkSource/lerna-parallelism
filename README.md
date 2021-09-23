@@ -103,19 +103,94 @@ volta install lerna-parallelism
 lerna-parallelism ...
 ```
 
-## Basic Usage
+## Usage
 
-`lerna-parallelism` adds two additional CLI options on top of `lerna`:
+- [Global Options](#Global-Options)
+  - [Partition Count](#Partition-Count): `--split`, `--partition`
+  - [Distribution Strategy](#Distribution-Strategy)
+    - [`--distribute-by count`](#--distribute-by-count)
+    - [`--distribute-by weight`](#--distribute-by-weight)
+- [Commands](#Commands)
+  - [`lerna-parallelism run`](#lerna-parallelism-run)
+  - [Other Commands](#Other-Commands)
 
-- `--split n`: The number of split partitions. Defaults to
-  [`$CIRCLE_NODE_TOTAL`][circleci-parallelism-env].
-- `--partition n`: Which partition to execute, zero-based. Defaults
-  [`$CIRCLE_NODE_INDEX`][circleci-parallelism-env].
+### Global Options
 
-[circleci-parallelism-env]: https://circleci.com/docs/2.0/parallelism-faster-jobs/#using-environment-variables-to-split-tests
+`lerna-parallelism` adds a few CLI options on top of `lerna`. The following
+options are globally understood by all commands supported by
+`lerna-parallelism`.
 
 All other command options behave just like the upstream `lerna` version of the
 respective command.
+
+#### Partition Count
+
+> Split the list of packages into `--split n` chunks and take the chunk with
+> zero-based index `--partition n`.
+
+- `--split n`: The number of split partitions.
+  Defaults to [`$CIRCLE_NODE_TOTAL`][circleci-parallelism-env].<br>
+  _This should be equal to the total number of worker instances._
+- `--partition n`: Which partition to execute, zero-based.
+  Defaults [`$CIRCLE_NODE_INDEX`][circleci-parallelism-env].<br>
+  _This should be the index of the individual worker instance you're running on._
+
+[circleci-parallelism-env]: https://circleci.com/docs/2.0/parallelism-faster-jobs/#using-environment-variables-to-split-tests
+
+#### Distribution Strategy
+
+> Algorithm to use for deciding which package goes into which partition.
+
+##### `--distribute-by count`
+
+> **Default.** Split into even-sized partitions.
+
+The packages are taken in order as emitted by `lerna` and simply split into
+[`--split n`](#Partition-Count) partitions of equal size.
+
+If the total package count cannot be distributed evenly, some partition(s) may
+be slightly smaller than the other partition(s).
+
+**Example:** 26 packages (named `a`–`z`) are split into `--split 4` partitions.
+
+- `--partition 0` (size = 7): `a`, `b`, `c`, `d`, `e`, `f`, `g`
+- `--partition 1` (size = 7): `h`, `i`, `j`, `k`, `l`, `m`, `n`
+- `--partition 2` (size = 6): `o`, `p`, `q`, `r`, `s`, `t`
+- `--partition 3` (size = 6): `u`, `v`, `w`, `x`, `y`, `z`
+
+##### `--distribute-by weight`
+
+> Assign a weight to each package and split into even-weighted partitions.
+
+The packages are ordered by "weight" in descending order and iteratively
+assigned to the current lightest partition. This results in partitions with
+approximately equal weight, but uneven size by total package count.
+
+This strategy is useful to account for different CI runtimes per package.
+
+Each package's weight is read from the `lernaPackageWeight` property from its
+`package.json`. If missing, it defaults to `1`. You can change the property
+lookup name with the `--packageWeightKey` option, like
+`--packageWeightKey testRuntime`. It just has to be a `number`.
+
+You're expected to add these weights yourself, where necessary. Basing the
+weights off of the package's CI runtime is sensible. Keep in mind, that you also
+need to maintain these weights: you should adjust the weights from time to time,
+e.g. when adding new tests or build steps to a package, that increase it's
+overall CI runtime.
+
+**Example:** 9 packages are split into `--split 3` partitions using the
+following weights.
+
+| Name   | `a` | `b` | `c` | `d` | `e` | `f` | `g` | `h` | `i` |
+| ------ | --: | --: | --: | --: | --: | --: | --: | --: | --: |
+| Weight |   9 |   5 |   5 |   5 |   2 |   2 |   2 |   1 |   1 |
+
+- `--partition 0` (size = 2, weight = 10): `a` (9), `h` (1)
+- `--partition 1` (size = 3, weight = 11): `b` (5), `d` (5), `i` (1)
+- `--partition 2` (size = 4, weight = 11): `c` (5), `e` (2), `f` (2), `g` (2)
+
+### Commands
 
 The following commands from `lerna` are supported:
 
@@ -151,34 +226,6 @@ others, it does, specifically:
 
 If you'd like to see support for these commands as well, feel free to submit a
 pull request!
-
-## Load Balancing (advanced)
-
-By default, `lerna-parallelism` gives each partition an approximately equal
-number of packages by chunking an alphabetized array. Depending on the number of
-tests each of your packages has, you may find this results in imbalanced
-runtimes between partitions.
-
-To address this, `lerna-parallelism` offers a load balancing mode which uses a
-weighted round-robin algorithm, informed by a weight "hint" specified in each
-package's `package.json`.
-
-This adds two additional CLI options in addition to those above:
-
-- `--loadBalance`: Toggles load-balancing mode. Defaults to `false`.
-- `--packageWeightKey myProjectWeight`: The lookup key used to read the
-  project's weight from its `package.json`. Defaults to `lernaPackageWeight`.
-
-### Usage
-
-`lerna-parallelism --loadBalance run test`
-
-And add a `lernaPackageWeight` property (numeric) to your package.json for each
-package. If it is missing, `1` is the default weight assigned.
-
-If you have a need to partition differently for multiple CI tasks, you can use
-`--packageWeightKey` to specify which weight property should be read from
-`package.json`.
 
 ## License
 
