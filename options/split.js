@@ -1,5 +1,7 @@
 const assert = require('assert');
 
+const { getWeightFromPackage } = require('../utils/package-weight');
+
 const { CIRCLE_NODE_INDEX, CIRCLE_NODE_TOTAL } = process.env;
 
 /**
@@ -152,41 +154,48 @@ module.exports.getLoadBalancedPackages = function (
   // Init partition weight totals
   const partitionWeights = Array.from({ length: partitions.length }).fill(0);
 
+  // Reads the `packageWeightKey` from the in-memory `Package` object,
+  // defaulting to `1`.
+  const getWeight = getWeightFromPackage(packageWeightKey, {
+    min: 0,
+    max: Number.POSITIVE_INFINITY,
+    defaultValue: 1
+  });
+
   // Sort packages by weight in descending order.
   // We will put the largest remaining weighted package in the partition with the least total weight.
-  const packagesSortedByWeightDesc = [...packages].sort(
-    (a, b) => (b.get(packageWeightKey) || 1) - (a.get(packageWeightKey) || 1)
-  );
+  const packagesSortedByWeightDesc = [...packages]
+    .map(pkg => ({ pkg, weight: getWeight(pkg) }))
+    .sort((a, b) => b.weight - a.weight);
 
+  // Find the partition that currently has the least cumulative weight.
   const getLightestPartition = () => {
-    let minId;
-    let minWeight = Number.MAX_SAFE_INTEGER;
+    let minIdx = 0;
+    let minWeight = Number.POSITIVE_INFINITY;
+
     for (let i = 0; i < split; i++) {
       if (minWeight > partitionWeights[i]) {
         minWeight = partitionWeights[i];
-        minId = i;
+        minIdx = i;
       }
     }
-
-    return minId;
+    return minIdx;
   };
 
-  for (const project of packagesSortedByWeightDesc) {
+  // Iteratively distribute packages from heaviest to lightest to the currently
+  // lightest partition, resulting in roughly equal-weight partitions.
+  for (const { pkg, weight } of packagesSortedByWeightDesc) {
     const lightestPartition = getLightestPartition();
     logger.debug(
-      `Adding package ${project.name} (weight: ${project.get(
-        packageWeightKey
-      )}) to partition ${lightestPartition}`
+      `Adding package ${pkg.name} (weight: ${weight}) to partition ${lightestPartition}`
     );
-    partitions[lightestPartition].push(project);
-    partitionWeights[lightestPartition] += project.get(packageWeightKey) || 1;
+    partitions[lightestPartition].push(pkg);
+    partitionWeights[lightestPartition] += weight;
   }
 
-  logger.debug(
-    partitions.map(part =>
-      part.map(pack => [pack.name, pack.get(packageWeightKey) || 1])
-    )
-  );
+  // logger.debug(
+  //   partitions.map(part => part.map(pkg => [pkg.name, getWeight(pkg)]))
+  // );
   logger.debug(partitionWeights);
 
   const chunk = partitions[partition];
