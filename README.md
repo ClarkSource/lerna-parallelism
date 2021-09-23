@@ -12,7 +12,7 @@
 [![npm version](https://badge.fury.io/js/lerna-parallelism.svg)](http://badge.fury.io/js/lerna-parallelism)
 [![Download Total](https://img.shields.io/npm/dt/lerna-parallelism.svg)](http://badge.fury.io/js/lerna-parallelism)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![CLARK Open Source](https://img.shields.io/badge/CLARK-Open%20Source-%232B6CDE.svg)](https://www.clark.de/de/jobs)  
+[![CLARK Open Source](https://img.shields.io/badge/CLARK-Open%20Source-%232B6CDE.svg)](https://www.clark.de/de/jobs)<br>
 [![Dependabot enabled](https://img.shields.io/badge/dependabot-enabled-blue.svg?logo=dependabot)](https://dependabot.com/)
 [![dependencies Status](https://david-dm.org/ClarkSource/lerna-parallelism/status.svg)](https://david-dm.org/ClarkSource/lerna-parallelism)
 [![devDependencies Status](https://david-dm.org/ClarkSource/lerna-parallelism/dev-status.svg)](https://david-dm.org/ClarkSource/lerna-parallelism?type=dev)
