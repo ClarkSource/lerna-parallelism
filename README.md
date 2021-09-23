@@ -125,11 +125,13 @@ The following commands from `lerna` are supported:
 
 [lerna-run]: https://github.com/lerna/lerna/blob/master/commands/run#readme
 
+> Run an npm script in each package that contains that script.
+
 For instance, this executes the last of four partitions. It also passes along
 `--stream` & `--concurrency 1` to prefix log lines with the package name.
 
 ```sh
-yarn lerna run \
+lerna-parallelism run \
   --stream \
   --concurrency 1 \
   --split 4 \
