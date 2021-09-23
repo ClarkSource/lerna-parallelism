@@ -146,10 +146,8 @@ module.exports.getLoadBalancedPackages = function (
   const total = packages.length;
 
   // Init empty partitions
-  const partitions = [];
-  for (let i = 0; i < split; i++) {
-    partitions.push([]);
-  }
+  const partitions = Array.from({ length: split });
+  for (let i = 0; i < partitions.length; i++) partitions[i] = [];
 
   // Init partition weight totals
   const partitionWeights = Array.from({ length: partitions.length }).fill(0);
