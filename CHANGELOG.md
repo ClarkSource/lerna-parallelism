@@ -1,3 +1,8 @@
+## v0.2.1 (2021-09-23)
+
+- fix(utils): cover `requireFromLerna`
+
+
 ## v0.2.0 (2021-09-23)
 
 - feat: weighted load-balancing via `package.json` config
