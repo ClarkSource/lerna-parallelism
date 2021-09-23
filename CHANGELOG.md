@@ -1,3 +1,9 @@
+## v0.3.0 (2021-09-23)
+
+- feat: support `--packageWeightKey nested.path`
+  ([#20](https://github.com/ClarkSource/lerna-parallelism/pull/20))
+
+
 ## v0.2.1 (2021-09-23)
 
 - fix(utils): cover `requireFromLerna`

@@ -1,6 +1,6 @@
 {
   "name": "lerna-parallelism",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "`lerna run` with CircleCI parallelism splitting support",
   "repository": {
     "type": "git",
