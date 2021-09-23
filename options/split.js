@@ -2,6 +2,12 @@ const assert = require('assert');
 
 const { CIRCLE_NODE_INDEX, CIRCLE_NODE_TOTAL } = process.env;
 
+/**
+ * Asserts that the `split` and `partition` values are valid.
+ *
+ * @param {number} split The total number of chunks.
+ * @param {number} partition The zero-based index of a chunk.
+ */
 function validate(split, partition) {
   assert(
     Number.isSafeInteger(split) && split > 0,
@@ -17,6 +23,9 @@ function validate(split, partition) {
   );
 }
 
+/**
+ * @param {import('@types/yargs').Argv} yargs
+ */
 module.exports.splittable = yargs =>
   yargs
     .option('split', {
@@ -52,7 +61,12 @@ module.exports.splittable = yargs =>
  * `array.slice(start, end)`, where `end` is non-inclusive, to slice an array of
  * `totalSize` into `chunkCount` balanced chunks.
  *
- * @return [start, end]
+ * @param {number} totalSize The total size of the array to be sliced.
+ * @param {number} chunkCount The number of chunks to slice the array into.
+ * @param {number} chunkIndex The zero-based index of the chunk to return the
+ * `[start, end]` bounds for.
+ *
+ * @returns {[start: number, end: number]}
  */
 function getChunkBounds(totalSize, chunkCount, chunkIndex) {
   validate(chunkCount, chunkIndex);
@@ -71,6 +85,16 @@ function getChunkBounds(totalSize, chunkCount, chunkIndex) {
 
 module.exports.getChunkBounds = getChunkBounds;
 
+/**
+ * Split `packages` into `split`evenly-sized chunks, returning the `partition`
+ * chunk.
+ *
+ * @param {Package[]} packages The list of packages to be distributed.
+ * @param {number} split The number of chunks to distribute the packages into.
+ * @param {number} partition The zero-based index of the chunk to return.
+ *
+ * @returns The chunk identified by `partition`.
+ */
 module.exports.getSplitPackages = function (packages, split, partition) {
   validate(split, partition);
 
@@ -90,6 +114,20 @@ module.exports.getSplitPackages = function (packages, split, partition) {
   };
 };
 
+/**
+ * Split `packages` into `split` evenly-weighted chunks, using
+ * `packageWeightKey` to lookup the weight of each package from its
+ * `package.json`.
+ *
+ * @param {Package[]} packages The list of packages to be distributed.
+ * @param {number} split The number of chunks to distribute the packages into.
+ * @param {number} partition The zero-based index of the chunk to return.
+ * @param {string} packageWeightKey The lookup key to use for reading the
+ * packages's estimated weight from its `package.json`.
+ * @param {Logger} logger
+ *
+ * @returns The chunk identified by `partition`.
+ */
 module.exports.getLoadBalancedPackages = function (
   packages,
   split,

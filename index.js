@@ -5,7 +5,8 @@ const { requireFromLerna } = require('./utils/require-from');
 
 const lernaCLI = requireFromLerna('@lerna/cli');
 
-module.exports.main = function main(argv) {
+/** @param {import('@types/yargs').Argv} argv */
+module.exports.main = function (argv) {
   const context = {
     lernaVersion: lernaPkg.version
   };
