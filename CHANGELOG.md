@@ -1,3 +1,9 @@
+## v0.1.5 (2021-09-23)
+
+- fix(utils): cover `requireFromLerna`<br>
+  Backported from `v0.2.1`.
+
+
 ## v0.1.4 (2021-09-23)
 
 - chore(deps): update all dependencies to the latest version
