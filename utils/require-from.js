@@ -1,22 +1,24 @@
 const path = require('path');
 
-module.exports = {
-  resolvePackagePath(package) {
-    const packageMainPath = module.exports.resolve(package);
-    const packagePath = path.dirname(packageMainPath);
-    return packagePath;
-  },
+function resolvePackagePath(packageName) {
+  const packageMainPath = require.resolve(packageName);
+  const packagePath = path.dirname(packageMainPath);
+  return packagePath;
+}
+module.exports.resolvePackagePath = resolvePackagePath;
 
-  resolveFrom(package) {
-    const packagePath = module.exports.resolvePackagePath(package);
-    const options = { paths: [packagePath] };
-    return request => require.resolve(request, options);
-  },
+function resolveFrom(packageName) {
+  const packagePath = module.exports.resolvePackagePath(packageName);
+  const options = { paths: [packagePath] };
+  return request => require.resolve(request, options);
+}
 
-  requireFrom(package) {
-    const resolve = module.exports.resolveFrom(package);
-    return request => require(resolve(request));
-  },
+module.exports.resolveFrom = resolveFrom;
 
-  requireFromLerna: module.exports.requireFrom('lerna')
-};
+function requireFrom(packageName) {
+  const resolve = module.exports.resolveFrom(packageName);
+  return request => require(resolve(request));
+}
+module.exports.requireFrom = requireFrom;
+
+module.exports.requireFromLerna = module.exports.requireFrom('lerna');
