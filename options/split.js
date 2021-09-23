@@ -36,9 +36,9 @@ module.exports.splittable = yargs =>
       defaultDescription:
         'Use a greedy round-robin load balancing algo instead of default split'
     })
-    .option('packageTestWeightKey', {
+    .option('packageWeightKey', {
       type: 'string',
-      default: 'lernaPackageTestWeight',
+      default: 'lernaPackageWeight',
       defaultDescription:
         "The lookup key to use for reading the project's weight from its package.json"
     })
@@ -94,7 +94,7 @@ module.exports.getLoadBalancedPackages = function (
   packages,
   split,
   partition,
-  packageTestWeightKey,
+  packageWeightKey,
   logger
 ) {
   validate(split, partition);
@@ -117,7 +117,7 @@ module.exports.getLoadBalancedPackages = function (
   // We will put the largest remaining weighted package in the partition with the least total weight.
   const packagesSortedByWeightDesc = [...packages].sort(
     (a, b) =>
-      (b.get(packageTestWeightKey) || 1) - (a.get(packageTestWeightKey) || 1)
+      (b.get(packageWeightKey) || 1) - (a.get(packageWeightKey) || 1)
   );
 
   const getLightestPartition = () => {
@@ -137,17 +137,17 @@ module.exports.getLoadBalancedPackages = function (
     const lightestPartition = getLightestPartition();
     logger.debug(
       `Adding package ${project.name} (weight: ${project.get(
-        packageTestWeightKey
+        packageWeightKey
       )}) to partition ${lightestPartition}`
     );
     partitions[lightestPartition].push(project);
     partitionWeights[lightestPartition] +=
-      project.get(packageTestWeightKey) || 1;
+      project.get(packageWeightKey) || 1;
   });
 
   logger.debug(
     partitions.map(part =>
-      part.map(pack => [pack.name, pack.get(packageTestWeightKey) || 1])
+      part.map(pack => [pack.name, pack.get(packageWeightKey) || 1])
     )
   );
   logger.debug(partitionWeights);

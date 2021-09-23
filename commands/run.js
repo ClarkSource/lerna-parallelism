@@ -15,7 +15,7 @@ class RunCommand extends LernaRunCommand {
         split,
         partition,
         loadBalance,
-        packageTestWeightKey
+        packageWeightKey
       } = this.options;
 
       const { packages, logMessage } = loadBalance
@@ -23,7 +23,7 @@ class RunCommand extends LernaRunCommand {
             this.packagesWithScript,
             split,
             partition,
-            packageTestWeightKey,
+            packageWeightKey,
             this.logger
           )
         : getSplitPackages(this.packagesWithScript, split, partition);

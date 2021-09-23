@@ -108,8 +108,8 @@ This adds two additional CLI options in addition to those above:
 
 - `--loadBalance`: Toggles load-balancing mode. Defaults to
   `false`.
-- `--packageTestWeightKey myProjectWeight`: The lookup key used to read the project's
-  weight from its package.json. Defaults to `lernaPackageTestWeight`.
+- `--packageWeightKey myProjectWeight`: The lookup key used to read the project's
+  weight from its `package.json`. Defaults to `lernaPackageWeight`.
 
 ### Usage
 
@@ -119,7 +119,7 @@ And add a `lernaPackageTestWeight` property (numeric) to your package.json for e
 If it is missing, `1` is the default weight assigned.
 
 If you have a need to partition differently for multiple CI tasks, you can use
-`--packageTestWeightKey` to specify which weight property should be read from package.json.
+`--packageWeightKey` to specify which weight property should be read from `package.json`.
 
 ## License
 
