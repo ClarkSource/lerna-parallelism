@@ -24,6 +24,12 @@ multiple workers, like [CircleCI's `parallelism` feature][circleci-parallelism].
 [lerna]: https://github.com/lerna/lerna
 [circleci-parallelism]: https://circleci.com/docs/2.0/parallelism-faster-jobs/
 
+- [Introduction](#Introduction)
+  - [Use Case](#Use-Case)
+  - [Quick Example](#Quick-Example)
+- [Installation](#Installation)
+- [Usage](#Usage)
+
 ## Introduction
 
 ### Use Case
