@@ -109,6 +109,8 @@ describe('getLoadBalancedPackages', () => {
       mockLogger
     );
 
+    // console.log({ firstPartition, secondPartition, thirdPartition });
+
     expect(firstPartition.length).toBe(2);
     expect(secondPartition.length).toBe(3);
     expect(thirdPartition.length).toBe(4);
