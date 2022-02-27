@@ -1,3 +1,16 @@
+## v0.4.0 (2022-02-27)
+
+- chore(deps): re-roll `yarn.lock` (d0eb0f0)
+- chore(deps): uprade `@types/node@^17.0.21` (ffd71c3)
+- chore(deps): uprade `release-it-lerna-changelog@^4.0.1` (7118783)
+- chore(deps): uprade `release-it@^14.12.5` (a8733df)
+- chore(deps): uprade `jest@^27.5.1` (ad1a71e)
+- chore(deps): uprade `yargs@^17.0.8` (ca53149)
+- chore(deps): move lerna to devDeps and peerDeps (d816db5)
+  ([#21](https://github.com/ClarkSource/lerna-parallelism/pull/21)) by
+  [@sugarshin](https://github.com/sugarshin)
+
+
 ## v0.3.0 (2021-09-23)
 
 - feat: support `--packageWeightKey nested.path`
