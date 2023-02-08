@@ -1,6 +1,6 @@
 {
   "name": "lerna-parallelism",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "`lerna run` with CircleCI parallelism splitting support",
   "repository": {
     "type": "git",
@@ -23,12 +23,12 @@
     "@types/yargs": "^17.0.8",
     "eslint": "^7.32.0",
     "jest": "^27.5.1",
-    "lerna": "^4.0.0",
+    "lerna": "^5.0.0",
     "release-it": "^14.12.5",
     "release-it-lerna-changelog": "^4.0.1"
   },
   "peerDependencies": {
-    "lerna": "^3.22.1 || ^4.0.0"
+    "lerna": "^3.22.1 || ^4.0.0" || ^5.0.0"
   },
   "engines": {
     "node": ">= 12.*"
